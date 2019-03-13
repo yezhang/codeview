@@ -5,6 +5,14 @@ JS 代码可视化工具。
 
 ## 技术方案
 
-Electron
+Electron  
+d3.js  
+React  
 
+## 目录结构
 
+build：存放构建脚本
+
+## 里程碑
+
+**milestone** 双击新建文本，tab 按键创建孩子文本节点。
