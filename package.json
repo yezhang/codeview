@@ -1,0 +1,22 @@
+{
+  "name": "codeview",
+  "version": "0.1.0",
+  "description": "JS 代码可视化工具。 可以绘制函数调用图、时序图、对象图。",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^4.0.8",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6"
+  },
+  "dependencies": {
+    "d3": "^5.9.1",
+    "react": "^16.8.4"
+  }
+}
