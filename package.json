@@ -6,14 +6,20 @@
   "build": {
     "appId": "com.yezhang.app",
     "mac": {
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "win": {
-      "target": ["nsis", "zip"]
+      "target": [
+        "nsis",
+        "zip"
+      ]
     }
   },
   "scripts": {
-    "start": "electron .",
+    "start": "electron ./out/main",
     "dist": "electron-builder --mac --x64",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,7 +34,7 @@
   },
   "dependencies": {
     "d3": "^5.9.1",
-    "react": "^16.8.4",
+    "electron-updater": "^4.0.6",
     "v8-inspect-profiler": "0.0.20"
   }
 }
