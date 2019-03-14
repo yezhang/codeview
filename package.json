@@ -2,7 +2,7 @@
   "name": "codeview",
   "version": "0.1.0",
   "description": "JS 代码可视化工具。 可以绘制函数调用图、时序图、对象图。",
-  "main": "main.js",
+  "main": "src/main/index.js",
   "build": {
     "appId": "com.yezhang.app",
     "mac": {
@@ -19,18 +19,32 @@
     }
   },
   "scripts": {
-    "start": "electron ./out/main",
+    "start": "NODE_ENV=production electron .",
+    "start:renderer": "webpack-dev-server --open --config ./config/webpack.config.dev.renderer.js",
+    "start:main":"NODE_ENV=development electron .",
     "dist": "electron-builder --mac --x64",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "autoprefixer": "^9.4.10",
+    "clean-webpack-plugin": "^2.0.0",
+    "css-loader": "^2.1.1",
+    "cssnano": "^4.1.10",
     "electron": "^4.0.8",
     "electron-builder": "^20.39.0",
+    "html-webpack-plugin": "^3.2.0",
+    "postcss": "^7.0.14",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333",
-    "webpack": "^4.29.6"
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
     "d3": "^5.9.1",

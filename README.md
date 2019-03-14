@@ -21,6 +21,25 @@ webpack：https://webpack.docschina.org/configuration/target/
 
 项目根目录下的 package.json 文件中，启动 electron 程序的脚本要指向 js 编译输出目录（out目录）。
 
+配置过程参考：https://juejin.im/entry/5a4bbbd66fb9a04525787f66
+
+
+启动开发环境
+
+1. 启动渲染进程：npm run start:renderer
+1. 启动主进程：npm run start:main
+
+
+__webpack配置文件__
+
+开发
+
+
+生产
+
+html-webpack-plugin
+MiniCssExtractPlugin
+
 ## 里程碑
 
 **milestone** 双击新建文本，tab 按键创建孩子文本节点。
