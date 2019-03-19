@@ -11,8 +11,6 @@ function isDev() {
 function createWindow() {
     win = new BrowserWindow({ width: 800, height: 600 })
 
-    console.log('isDev:', isDev());
-
     if (isDev()) {
         // 这里的url换成你所使用框架开发时的url
         win.loadURL('http://127.0.0.1:9000');

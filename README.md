@@ -19,6 +19,8 @@ out：JS 编译输出目录，主进程、渲染进程都在 out 下分别输出
 
 webpack：https://webpack.docschina.org/configuration/target/
 
+webpack 配置文件生成：https://generatewebpackconfig.netlify.com
+
 项目根目录下的 package.json 文件中，启动 electron 程序的脚本要指向 js 编译输出目录（out目录）。
 
 配置过程参考：https://juejin.im/entry/5a4bbbd66fb9a04525787f66
@@ -26,8 +28,9 @@ webpack：https://webpack.docschina.org/configuration/target/
 
 启动开发环境
 
-1. 启动渲染进程：npm run start:renderer
+1. 启动渲染进程：npm run watch:renderer
 1. 启动主进程：npm run start:main
+主进程也可以通过 VS Code 直接启动。
 
 
 __webpack配置文件__

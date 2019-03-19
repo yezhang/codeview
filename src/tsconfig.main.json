@@ -1,6 +1,7 @@
+
 {
     "compilerOptions": {
-        "outDir": "../out",  	// 输出目录, 同渲染线程放在一起
+        "outDir": "../out/main",  	// 输出目录, 同渲染线程放在一起
         "sourceMap": true,	 	// 调试时需要
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
