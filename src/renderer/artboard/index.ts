@@ -1,5 +1,11 @@
 import "./index.css";
 import * as d3 from "d3";
+import * as utils from './utils.ts';
+
+let currentFocusedInput = null;
+
+// 提交当前文本
+let commitCurrentInput = null;
 
 function Artboard_OnDblClick() {
     var artboard = d3.select(this);
@@ -24,6 +30,7 @@ function Artboard_OnDblClick() {
     }
 
     var label = artboard.append('text')
+        .attr('class', 'artboart-text')
         .attr('dominant-baseline', 'middle')
         .attr("contentEditable", true)
         .attr('x', pos.x).attr('y', pos.y)
@@ -36,75 +43,100 @@ function Artboard_OnDblClick() {
         showEditInput(text);
     });
 
-    label.on('mouseover', function () {
-        d3.select(this).style("cursor", "text");
-    });
+    // label.on('mouseover', function () {
+    //     d3.select(this).style("cursor", "text");
+    // });
 
     function showEditInput(initValue) {
         var labelX = label.attr('x');
         var labelY = label.attr('y');
 
-        var tmpInputContainer = artboard
-            .append('foreignObject').attr('x', labelX - 2).attr('y', labelY - 14); //精确调整输入框与标签的位置关系，使其完全重合。
+        // var tmpInputContainer = artboard
+        //     .append('foreignObject').attr('x', labelX - 2).attr('y', labelY - 14); //精确调整输入框与标签的位置关系，使其完全重合。
 
-        // var body = d3.select("body");
-        // var tmpInputContainer = body.append('div').style('position', 'fixed').style('left', label).style('top', labelY - 15)
+        var body = d3.select("body");
+        var tmpInputContainer = body.append('div')
+            .attr('class', 'nodeinput-container')
+            .style('position', 'fixed')
+            .style('border', 'solid 1px gray')
+            .style('padding', '3px 6px')
+            .style('left', `${labelX - 7}px`)
+            .style('top', `${labelY - 16}px`)
+            .style('font-size', '18px')
+            .style('height', '20px');
         var inputField = tmpInputContainer
-            .append('xhtml:div').attr('xmlns', 'http://www.w3.org/1999/xhtml')
-            .append('input')
-            .attr('type', 'text')
+            .append('span')
+            .attr('class', 'nodeinput single-line')
+            .style('display', 'inline-block')
             .style('font-family', 'Times New Roman')
             .style('font-size', '18px')
-            .style('padding', '0')
-            .style('transition', 'width 0.25s')
             .style('height', '20px')
-            .style('line-height', '20px'); // 注意：line-height 数值要大于 font-size 的数值。如果相等，那么先输入英文，再输入中文时会导致英文向下移动
-
-        if (initValue) {
-
-            inputField.attr('value', initValue);
-            inputField.style('width', (label.node().getBBox().width + 20) + 'px'); //size
-        }
+            .style('line-height', '20px')
+            .attr('contenteditable', 'true');
+        // var inputField = tmpInputContainer
+        //     .append('xhtml:div').attr('xmlns', 'http://www.w3.org/1999/xhtml')
+        //     .append('input')
+        //     .attr('type', 'text')
+        //     .style('font-family', 'Times New Roman')
+        //     .style('font-size', '18px')
+        //     .style('padding', '0')
+        //     .style('transition', 'width 0.25s')
+        //     .style('height', '20px')
+        //     .style('line-height', '20px'); // 注意：line-height 数值要大于 font-size 的数值。如果相等，那么先输入英文，再输入中文时会导致英文向下移动
 
         var inputDom = inputField.node();
-        inputDom.focus();
-        inputDom.selectionStart = inputDom.selectionEnd = inputDom.value.length;
 
+        if (initValue) {
+            // inputField.attr('value', initValue);
+            inputDom.textContent = initValue;
+            // inputField.style('width', (label.node().getBBox().width + 20) + 'px'); //size
+        }
+
+
+        inputDom.focus();
+
+        // 正确放置光标到文本的最后
+        utils.placeCaretAtEnd(inputDom);
+        // inputDom.selectionStart = inputDom.selectionEnd = inputDom.textContent.length;
+
+        // 存储到全局变量中
+        currentFocusedInput = inputDom;
 
         /**
          * 生成真正的文本节点，
          * @param inputField 
          */
-        function commitChange(inputField) {
-            var inputNode = d3.select(inputField).node();
+        function commitChange(e, inputDOM) {
 
-            var value = inputNode.value;
+            var inputNode = inputDOM;
 
-            if(value){
+            var value = inputNode.textContent;
+
+            if (value) {
                 // 如果字符串不是空
                 label.text(value);
-            }else {
+            } else {
                 // 如果准备添加文本，但是没有添加任何文本，则直接删除标签节点
                 label.remove();
             }
-            
+
             tmpInputContainer.remove();
         }
 
-        inputField.on('keypress', function () {
-            console.log(d3.event.keyCode);
+        commitCurrentInput = commitChange;
 
-            if (d3.event.keyCode === 13) {
-                console.log("您按下了回车!")
-                commitChange(this);
+        inputField.on('keydown', function () {
+
+            // 回车键/Tab键
+            //  
+            if ((d3.event.key === 'Enter' && d3.event.metaKey) || d3.event.key === 'Tab') {
+                console.log('OK');
+                commitChange(d3.event, this);
             }
-        });
 
-        // 自动调整宽度
-        // 输入内容修改时触发
-        inputField.on('input', function () {
-            console.log(this.value);
-            inputField.style('width', (this.value.length + 1) * 7 + 'px');
+            if (d3.event.keyCode === 9) {
+                console.log(d3.event);
+            }
         });
     }
 
@@ -129,16 +161,7 @@ function InitArtboard() {
 
     svg.on("dblclick", Artboard_OnDblClick);
 
-    // svg.on(
-    //     "mouseover", function (d) {
-    //         console.log('mouseover');
-    //         d3.select(this).style("cursor", "text");
-    //     });
-    //     ,
-    //     "mouseout": function(d) {
-    //       d3.select(this).style("cursor", "default"); 
-    //     }
-    //   });
+
 }
 
 

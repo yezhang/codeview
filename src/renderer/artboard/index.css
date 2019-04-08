@@ -18,15 +18,46 @@ html, body {
 }
 
 .toolbtn {
+    padding: 5px 2px;
     width: 20px;
     height: 20px;
     background-color: white;
 }
 
 .toolbtn.move {
-
+    
 }
 
 .toolbtn.text {
 
+}
+
+.nodeinput:focus {
+    outline:none; /*移除浏览器默认的聚焦高亮*/
+}
+
+.nodeinput-container:hover {
+    cursor: text;
+}
+
+/*控制单行样式*/
+[contenteditable="true"].single-line {
+    white-space: nowrap;
+    overflow: hidden;
+} 
+[contenteditable="true"].single-line br {
+    display:none;
+
+}
+[contenteditable="true"].single-line * {
+    display:inline;
+    white-space:nowrap;
+}
+
+.artboardsvg {
+
+}
+
+.artboart-text:hover {
+    cursor: move;
 }
